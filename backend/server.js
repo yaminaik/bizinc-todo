@@ -2,6 +2,7 @@
 const express = require('express');
 const postRoutes = require('./routes/posts'); // Import your posts routes
 const logger = require('./middleware/logger'); // Import the logging middleware
+const cors = require('cors');
 
 const app = express();
 const port = 3001;
@@ -9,6 +10,7 @@ const port = 3001;
 // Middleware
 app.use(express.json()); // To parse JSON bodies
 app.use(logger); // Logging middleware
+app.use(cors()); 
 
 // Root route (optional, for testing)
 app.get('/', (req, res) => {
