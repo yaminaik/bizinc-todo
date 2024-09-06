@@ -66,9 +66,7 @@ To run this project, you will need to add the following environment variables in
 ### Backend Setup
 
 1. Clone the repository:
-   git clone https://github.com/yourusername/ToDoList.git
-   cd ToDoList/backend
-   
+2. Navigate to Backend:cd bizinc-todo/backend
 2. Install dependencies: npm install
 3. Set up PostgreSQL and run migrations as described in the Database Setup section.
 4. Run the backend server:   npm run dev
