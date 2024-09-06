@@ -1,29 +1,82 @@
-// backend/server.js
 const express = require('express');
-const postRoutes = require('./routes/posts'); // Import your posts routes
-const logger = require('./middleware/logger'); // Import the logging middleware
-const cors = require('cors');
-
+const session = require('express-session');
+const passport = require('passport');
+const cors = require('cors'); // Import cors
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const pool = require('./config/db'); // PostgreSQL connection pool
+require('dotenv').config();
 const app = express();
-const port = 3001;
 
-// Middleware
-app.use(express.json()); // To parse JSON bodies
-app.use(logger); // Logging middleware
-app.use(cors()); 
+// CORS configuration
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from this origin (frontend)
+  credentials: true // Allow credentials (cookies, sessions)
+}));
 
-// Root route (optional, for testing)
-app.get('/', (req, res) => {
-  res.send('Welcome to the backend API!');
+// Middleware to parse JSON
+app.use(express.json());
+
+// Session configuration
+app.use(session({
+  secret: process.env.secret_key,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }, // Use secure: true in production with HTTPS
+}));
+
+// Initialize Passport and restore authentication state from the session
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport Local Strategy
+passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+  try {
+    const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return done(null, false, { message: 'Incorrect email.' });
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return done(null, false, { message: 'Incorrect password.' });
+    }
+
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+}));
+
+// Serialize user to store in session
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
+// Deserialize user from session
+passport.deserializeUser(async (id, done) => {
+  try {
+    const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+    const user = userResult.rows[0];
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
 
-app.use('/api/posts', postRoutes); // Mount the posts routes
+// Define routes
+const postsRouter = require('./routes/posts');
+const usersRouter = require('./routes/users');
+const commentsRouter = require('./routes/comments');
 
+// Register routes after middleware
+app.use('/api/posts', postsRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/comments', commentsRouter);
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(3001, () => {
+  console.log('Server running on http://localhost:3001');
 });
-
-app.use(logger); // Add logging middleware

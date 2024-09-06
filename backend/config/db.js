@@ -1,13 +1,14 @@
 // backend/config/db.js
 const { Pool } = require('pg');
+require('dotenv').config();
 
 // Configure PostgreSQL connection pool
 const pool = new Pool({
-  user: 'yami',
-  host: 'localhost',
-  database: 'todolist',
-  password: 'yami',
-  port: 5432,
+  user:  process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
 module.exports = pool;
