@@ -1,0 +1,31 @@
+/* Replace global h2 selector with a local class */
+.heading {
+    color: #0070f3;
+  }
+  
+  /* Existing styles */
+  .listItem {
+    background-color: #f0f0f0;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .listItem:hover {
+    background-color: #e6e6e6;
+  }
+  
+  .container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button {
+    margin-bottom: 20px;
+  }
+  

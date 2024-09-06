@@ -1,0 +1,55 @@
+/* Style for the container */
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style for the list item */
+  .commentItem {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  /* Heading styles */
+  .heading {
+    color: #0070f3;
+    margin-bottom: 15px;
+  }
+  
+  /* Paragraph styles */
+  .paragraph {
+    color: #555;
+  }
+  
+  /* Textarea styles */
+  .textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  
+  /* Button styles */
+  .submitButton {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submitButton:hover {
+    background-color: #005bb5;
+  }
+  
