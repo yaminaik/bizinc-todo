@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from '../styles/Posts.module.css'; // Import CSS module
-
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+}
 export default function Posts() {
   const [posts, setPosts] = useState([]);
 
