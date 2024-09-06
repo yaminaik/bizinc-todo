@@ -6,16 +6,16 @@ const pool = require('../config/db'); // Import database connection
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
-  
+  const { name, email, password } = req.body; // Add 'name' here
+
   try {
     // Hash the password before saving it to the database
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Insert the new user with hashed password
+    // Insert the new user with the name and hashed password
     const newUser = await pool.query(
-      'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
-      [email, hashedPassword]
+      'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *',
+      [name, email, hashedPassword] // Add 'name' to the query
     );
 
     res.json(newUser.rows[0]);

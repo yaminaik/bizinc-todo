@@ -7,6 +7,18 @@ export default function PostComments() {
   const { postId } = router.query;
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [user, setUser] = useState(null); // To store the logged-in user
+
+  // Fetch the authenticated user from localStorage when the component mounts
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser)); // Parse and set the stored user
+      }
+    }
+  }, []);
+
   useEffect(() => {
     if (!router.isReady) return; // Ensure router is ready
     
@@ -36,7 +48,7 @@ export default function PostComments() {
         },
         body: JSON.stringify({
           content: newComment, // The new comment content
-          user_id: 1, // Replace with actual user ID from your auth system
+          user_id:  user.id, // Replace with actual user ID from your auth system
           post_id: postId, // Post ID
         }),
       });

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import styles from '../styles/Auth.module.css';
+import Link from 'next/link';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,15 +15,8 @@ export default function Login() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ email, password }) // Ensure you're sending 'email' and 'password'
+        body: JSON.stringify({ email, password })
       });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error:', errorText); // Log the response from the server
-        alert('Login failed: ' + errorText);
-        return;
-      }
   
       const data = await response.json();
   
@@ -35,29 +30,35 @@ export default function Login() {
       console.error('Error logging in:', error);
     }
   };
-  
-  
+
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Login</button>
-    </form>
+    <div className={styles.formContainer}>
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={styles.formInput}
+            required
+          />
+        </div>
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles.formInput}
+            required
+          />
+        </div>
+        <button type="submit" className={styles.formButton}>Login</button>
+         {/* Link to the Register page */}
+      <p>Don't have an account? <Link href="/register">Register here</Link></p>
+      </form>
+    </div>
   );
 }

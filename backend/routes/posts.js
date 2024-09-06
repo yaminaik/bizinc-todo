@@ -71,13 +71,11 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
-
-// Get the number of comments on a specific post
 router.get('/post/:postId/comment-count', async (req, res) => {
   const { postId } = req.params;
   try {
     const result = await pool.query('SELECT COUNT(*) FROM comments WHERE post_id = $1', [postId]);
-    res.json(result.rows[0]);
+    res.json({ count: result.rows[0].count });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
